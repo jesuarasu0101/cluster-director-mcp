@@ -7,11 +7,11 @@ import shutil
 from pathlib import Path
 
 # Parses a gemini extensions/settings file and adds 
-# cluster-director-mcp and context7 if they are not already present
+# cluster-director-mcp  if it is not already present
 
 def add_extensions_to_gemini_json(file_path):
     """
-    Adds cluster-director-mcp and context7 extensions servers to gemini JSON file.
+    Adds cluster-director-mcp extension servers to gemini JSON file.
     """
 
     print("Processing JSON settings file: " + file_path)
@@ -57,24 +57,16 @@ def add_extensions_to_gemini_json(file_path):
                     "MCP_SERVER_REQUEST_TIMEOUT": "72000000"
                 }
             }
-        if 'context7' not in mcp_servers_dict:
-            print("Adding context7 MCP server")
-            mcp_servers_dict['context7'] = {'httpUrl': "https://mcp.context7.com/mcp"}
-        else:
-            print("context7 MCP server already present")
     else:
-        print("mcpServers not present in JSON file, adding both cluster-director-mcp and context7")
+        print("mcpServers not present in JSON file, adding cluster-director-mcp")
         data['mcpServers'] = {
             "cluster-director-mcp": {
                 "command": mcp_binary_path,
-                "trust": "true",
-                "timeout": "72000000",
+                "trust": True,
+                "timeout": 72000000,
                 "env": {
                     "MCP_SERVER_REQUEST_TIMEOUT": "72000000"
                 }
-            },
-            'context7': {
-                'httpUrl': "https://mcp.context7.com/mcp"
             }
         }
 
